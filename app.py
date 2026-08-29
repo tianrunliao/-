@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, jsonify
+import os
 import threading
 import time
 import numpy as np
@@ -79,7 +80,10 @@ def real_training_numpy(job_id):
             'batch_size': 64, # 固定 batch size
             'use_augmented_data': False, # 固定为 False
             'device': 'cpu', # 固定为 cpu
-            'data_dir': '/Users/tianrunliao/Desktop/廖天润 22300680285 project 1/dataset/MNIST', # 需要确保路径有效
+            'data_dir': os.environ.get(
+                'MNIST_DATA_DIR',
+                os.path.join(os.path.dirname(os.path.abspath(__file__)), 'dataset', 'MNIST'),
+            ),
             'use_one_hot': config.get('loss_type', 'cross_entropy') == 'mse'
         }
         # 验证数据目录是否存在
